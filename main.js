@@ -3,7 +3,46 @@ const EMPTY_HEART = '♡'
 const FULL_HEART = '♥'
 
 // Your JavaScript code goes here!
+let hide = document.querySelector('#modal')
+hide.setAttribute('Class', 'hidden')
 
+function hideError (){
+  hide.className = "hidden";
+}
+
+let heart = document.querySelectorAll('span')
+
+heart.forEach( like =>{
+  like.addEventListener('click', ()=>{
+    fillHeart(like)
+    mimicServerCall()
+    .then(res => {
+      if(res === "Pretend remote server notified of action!") {
+        fillHeart()
+      }
+    })
+    .catch(error => {
+      if(error === "Random server error. Try again."){
+        hide.className = "";
+        hide.innerHTML = error;
+      setTimeout(visibleModal, 3000)
+
+
+      }
+    })
+  })
+})
+
+function fillHeart (like){
+  if(like.className === 'like-glyph'){
+    like.innerHTML = FULL_HEART
+    like.className = 'like-glyph activated-heart'
+  } 
+  else if (like.className === 'like-glyph activated-heart'){
+    like.innerHTML = EMPTY_HEART
+    like.className = 'like-glyph'
+  }
+}
 
 
 
